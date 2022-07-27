@@ -40,7 +40,7 @@ function BuyTokenModal(props) {
   const handleApprove = async () => {
     console.log(chainId, account);
     if (chainId !== ChainID && account === undefined) {
-      Swal.fire("Warning", "Please connect to the wallect", "warning");
+      Swal.fire("Warning", "Please connect to the wallet", "warning");
     } else {
       let web3 = new Web3(library.provider);
       let token = new web3.eth.Contract(BUSD, BUSDToken);
@@ -80,7 +80,7 @@ function BuyTokenModal(props) {
                   .then(() => {
                     setIsApproveDone(true);
                     setIsTranscation(false);
-                    Swal.fire("Success", "Transcation successfull", "success");
+                    Swal.fire("Success", "Transcation successful", "success");
                   })
                   .catch(() => {
                     setIsApproveDone(false);
@@ -137,7 +137,7 @@ function BuyTokenModal(props) {
           setIsApproveDone(false);
           setIsTranscation(false);
           setIsValue("");
-          Swal.fire("Success", "Transcation succefull", "success");
+          Swal.fire("Success", "Transcation successful", "success");
         })
         .catch(() => {
           setIsTranscation(false);

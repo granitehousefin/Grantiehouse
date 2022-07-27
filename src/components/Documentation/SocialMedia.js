@@ -49,7 +49,7 @@ fontSize={{lg:48,md:48,sm:48,xs:18}}
       alignItems="center"
       >
       <Box>
-      <a href="- https://t.me/GraniteHouseProject" style={{textDecoration: "none"}}>
+      <a href="https://t.me/GraniteHouseProject" style={{textDecoration: "none"}}>
      <Box 
      color={`orange`}
      ml={4}
@@ -69,7 +69,7 @@ fontSize={{lg:48,md:48,sm:48,xs:18}}
      </Box>
      </a>
 
-     <a href="- https://twitter.com/GraniteHouseFin" style={{textDecoration: "none"}}>
+     <a href="https://twitter.com/GraniteHouseFin" style={{textDecoration: "none"}}>
      <Box 
      color={`orange`}
      ml={4}
