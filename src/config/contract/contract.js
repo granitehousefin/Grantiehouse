@@ -1,3 +1,3 @@
-export const UADToken = "0xd6a2542ca5d896e511410982e8f14d0ada240137"; //   Token -> 5 Decimal
-export const BUSDToken = "0xe9e7cea3dedca5984780bafc599bd69add087d56"; //18 decimal
-export const ICOContractaddress = "0x3B1cEe14F58745724AfE32783b7F2eBa3B67D869";
+export const UADToken = "0x59d55A5919d8d5E902d0D85b1426a9C00E7C5AcA"; //   Token -> 5 Decimal
+export const BUSDToken = "0xD440d2d7db3c8400196981358Ca460E65149D6e7"; //18 decimal
+export const ICOContractaddress = "0xB5036B603247d8850b5F2cB7A73084cBCcdb4D26";

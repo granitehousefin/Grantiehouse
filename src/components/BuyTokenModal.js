@@ -8,6 +8,7 @@ import { connectors } from "../utils/connectors";
 import { useWeb3React } from "@web3-react/core";
 import { onlyNumbers } from "../utils/service";
 import Web3 from "web3";
+
 import {
   BUSDToken,
   ICOContractaddress,
@@ -38,9 +39,12 @@ function BuyTokenModal(props) {
   const { chainId, account, library, active, deactivate } = useWeb3React();
   const ChainID = 3;
   const handleApprove = async () => {
+    let saleStatus = await SaleStatus(ICOContractaddress);
     console.log(chainId, account);
     if (chainId !== ChainID && account === undefined) {
       Swal.fire("Warning", "Please connect to the wallet", "warning");
+    } else if (saleStatus == false) {
+      Swal.fire("Warning", "Sale has not been started yet", "warning");
     } else {
       let web3 = new Web3(library.provider);
       let token = new web3.eth.Contract(BUSD, BUSDToken);
@@ -80,13 +84,13 @@ function BuyTokenModal(props) {
                   .then(() => {
                     setIsApproveDone(true);
                     setIsTranscation(false);
-                    Swal.fire("Success", "Transcation successful", "success");
+                    Swal.fire("Success", "Transaction successful", "success");
                   })
                   .catch(() => {
                     setIsApproveDone(false);
                     setIsTranscation(false);
                     setIsValue(0);
-                    Swal.fire("Warning", "Transcation Failed", "warning");
+                    Swal.fire("Warning", "Transaction Failed", "warning");
                   });
               } else {
                 setIsTranscation(false);
@@ -119,7 +123,24 @@ function BuyTokenModal(props) {
       }
     }
   };
+
+  // Sale token function
+  const SaleStatus = async () => {
+    console.log(chainId, account);
+    if (chainId !== ChainID && account === undefined) {
+      Swal.fire("Warning", "Please connect to the wallet", "warning");
+    } else {
+      let web3 = new Web3(library.provider);
+      return await new web3.eth.Contract(ICOAbi, ICOContractaddress).methods
+        .saleStatus()
+        .call();
+    }
+  };
+
+  // Close Sale token
+
   const handleBuy = async () => {
+    // alert(saleStatus);
     if (chainId !== ChainID && account === undefined) {
       alert("Please connect to the wallect");
     } else {
@@ -137,12 +158,12 @@ function BuyTokenModal(props) {
           setIsApproveDone(false);
           setIsTranscation(false);
           setIsValue("");
-          Swal.fire("Success", "Transcation successful", "success");
+          Swal.fire("Success", "Transaction successful", "success");
         })
         .catch(() => {
           setIsTranscation(false);
           setIsValue("");
-          Swal.fire("Warning", "Transcation Failed", "warning");
+          Swal.fire("Warning", "Transaction Failed", "warning");
         });
     }
   };
@@ -152,7 +173,9 @@ function BuyTokenModal(props) {
       {" "}
       <Modal
         open={props.open}
-        onClose={() => props.setOpen()}
+        onClose={() => {
+          props.setOpen();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         style={{ zIndex: "300" }}
@@ -188,6 +211,7 @@ function BuyTokenModal(props) {
                 sx={{ color: "white" }}
                 style={{ cursor: "pointer" }}
                 onClick={() => {
+                  setIsValue(0);
                   setIsApproveDone(false);
                   props.setOpen();
                 }}
@@ -201,10 +225,10 @@ function BuyTokenModal(props) {
                 <input
                   placeholder="Enter Amount"
                   type="number"
-                  min="0"
-                  step="any"
+                  min="1"
+                  step="1"
                   id="buyAmount"
-                  value={isValue === 0 ? "" : isValue}
+                  value={isValue === 0 ? "" : parseInt(isValue)}
                   onInput={(e) => setIsValue(e.target.value)}
                   disabled={isApproveDone}
                   style={{
@@ -216,24 +240,25 @@ function BuyTokenModal(props) {
                     flex: 1,
                   }}
                 ></input>
-                <div style={{ color: "white", marginLeft: "10px" }}>{
-                      parseInt(isValue)>1?`Rooms`:`Room`
-                    }</div>
+                <div style={{ color: "white", marginLeft: "10px" }}>
+                  {parseInt(isValue) > 1 ? `Rooms` : `Room`}
+                </div>
               </Box>
-              <Box> 
+              <Box>
                 {isValue > 0 ? (
-                  <div style={{ display:"flex", color: "white", marginLeft: "10px",}}>
-                    <Box>
-                    {parseInt(isValue)}
+                  <div
+                    style={{
+                      display: "flex",
+                      color: "white",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    <Box>{parseInt(isValue)}</Box>
+                    <Box ml={1}>
+                      {parseInt(isValue) > 1
+                        ? `Rooms : ${parseInt(isValue) * 5000} BUSD`
+                        : `Room : ${parseInt(isValue) * 5000} BUSD`}
                     </Box>
-                    <Box
-                    ml={1}
-                    >
-                    {
-                     parseInt(isValue)>1?`Rooms : ${parseInt(isValue) * 5000} BUSD`:`Room : ${parseInt(isValue) * 5000} BUSD`
-                    }
-                    </Box>
-                  
                   </div>
                 ) : null}
               </Box>
